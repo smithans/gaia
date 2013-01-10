@@ -40,21 +40,30 @@ Calendar.ns('Views').MonthsDay = (function() {
     },
 
     _updateHeader: function() {
-      var header = this.header;
-      var template = navigator.mozL10n.get(
-        'agenda-date-format'
-      );
-
       // maybe we should localize this output ?
-      var format = this.app.dateFormat.localeFormat(
+      var ordinal = parseInt(this.app.dateFormat.localeFormat(
         this.date,
-        template || '%A %e %B %Y'
+        '%d'
+      ));
+
+    var suffixes = ["th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th",
+       		    "th", "th", "th", "th", "th", "th", "th", "th", "th", "th",
+       		    "th", "st", "nd", "rd", "th", "th", "th", "th", "th", "th",
+		    "th", "st"];
+
+    var format1 = this.app.dateFormat.localeFormat(
+        this.date,
+        '%A'
       );
 
-      header.textContent = format;
-      header.dataset.date = this.date.toString();
-      header.dataset.l10nDateFormat = template;
-    },
+    var format2 = this.app.dateFormat.localeFormat(
+        this.date,
+        '%B %Y'
+      );
+
+    var format = format1 +' '+ordinal+ suffixes[ordinal] +' '+ format2;
+      this.header.textContent = format;
+     },
 
     handleEvent: function(e) {
       Parent.prototype.handleEvent.apply(this, arguments);
